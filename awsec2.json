@@ -10,7 +10,7 @@
     "product_version_regex": ".*",
     "publisher": "Splunk",
     "license": "Copyright (c) 2019-2023 Splunk Inc.",
-    "app_version": "2.4.2",
+    "app_version": "2.4.3-fdse2",
     "utctime_updated": "2023-01-04T12:24:20.000000Z",
     "package_name": "phantom_awsec2",
     "main_module": "awsec2_connector.py",
@@ -29,7 +29,7 @@
             },
             {
                 "module": "boto3",
-                "input_file": "wheels/shared/boto3-1.17.30-py2.py3-none-any.whl"
+                "input_file": "wheels/py3/boto3-1.28.75-py3-none-any.whl"
             },
             {
                 "module": "botocore",
@@ -1775,6 +1775,126 @@
                     "data_type": "numeric",
                     "example_values": [
                         0
+                    ]
+                },
+                {
+                    "data_path": "action_result.summary",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.message",
+                    "data_type": "string",
+                    "example_values": [
+                        "Successfully deleted the security group"
+                    ]
+                },
+                {
+                    "data_path": "summary.total_objects",
+                    "data_type": "numeric",
+                    "example_values": [
+                        1
+                    ]
+                },
+                {
+                    "data_path": "summary.total_objects_successful",
+                    "data_type": "numeric",
+                    "example_values": [
+                        1
+                    ]
+                }
+            ],
+            "render": {
+                "type": "table"
+            },
+            "versions": "EQ(*)"
+        },
+        {
+            "action": "modify security group rules",
+            "identifier": "modify_security_group",
+            "description": "Modifies the rules of a security group.",
+            "type": "generic",
+            "read_only": false,
+            "parameters": {
+                "group_id": {
+                    "description": "The ID of the security group",
+                    "data_type": "string",
+                    "contains": [
+                        "aws ec2 group id"
+                    ],
+                    "primary": true,
+                    "required": true,
+                    "order": 0
+                },
+                "security_group_rule": {
+                    "description": "Information about the security group properties to update. Remember to pass array of SecurityGroupRuleUpdate objects. Example: [{'SecurityGroupRuleId': 'sgr-07de36a0521f39c8b','SecurityGroupRule': {'IpProtocol': 'tcp','FromPort': 22,'ToPort': 22,'CidrIpv4': '3.3.3.3/32','Description': 'added ssh port'}}]",
+                    "data_type": "string",
+                    
+                    "primary": true,
+                    "required": true,
+                    "contains": [
+                        "aws SecurityGroupRuleUpdate"
+                    ],
+                    "order": 1
+                },
+                "dry_run": {
+                    "description": "Check if asset has required permissions for the action",
+                    "data_type": "boolean",
+                    "order": 2
+                }
+            },
+            "output": [
+                {
+                    "data_path": "action_result.status",
+                    "data_type": "string",
+                    "example_values": [
+                        "success",
+                        "failed"
+                    ],
+                    "column_name": "Status",
+                    "column_order": 1
+                },
+                {
+                    "data_path": "action_result.parameter.security_group_rule",
+                    "data_type": "string",
+                    "example_values": [
+                        "[{'SecurityGroupRuleId': 'sgr-07de36a0521f39c8b','SecurityGroupRule': {'IpProtocol': 'tcp','FromPort': 22,'ToPort': 22,'CidrIpv4': '3.3.3.3/32','Description': 'added ssh port'}}]"
+                    ],
+                    "contains": [
+                        "aws SecurityGroupRuleUpdate"
+                    ]
+                },
+                {
+                    "data_path": "action_result.parameter.dry_run",
+                    "data_type": "boolean",
+                    "example_values": [
+                        true,
+                        false
+                    ]
+                },
+                {
+                    "data_path": "action_result.parameter.group_id",
+                    "data_type": "string",
+                    "contains": [
+                        "aws ec2 group id"
+                    ],
+                    "example_values": [
+                        "sg-00dae13e516e82136"
+                    ],
+                    "column_name": "Group ID",
+                    "column_order": 0
+                },
+                {
+                    "data_path": "action_result.data.*.ResponseMetadata.HTTPStatusCode",
+                    "data_type": "numeric",
+                    "example_values": [
+                        200
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.ResponseMetadata.RequestId",
+                    "data_type": "string",
+                    "example_values": [
+                        "c5ada32e-8c4d-4f4a-b9aa-d53efd210aba"
                     ]
                 },
                 {

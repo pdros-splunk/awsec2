@@ -850,6 +850,33 @@ class AwsEc2Connector(BaseConnector):
         action_result.add_data(response)
 
         return action_result.set_status(phantom.APP_SUCCESS, "Successfully deleted the security group")
+    
+    def _handle_modify_security_group(self, param):
+
+        self.save_progress("In action handler for: {0}".format(self.get_action_identifier()))
+
+        # Add an action result object to self (BaseConnector) to represent the action for this param
+        action_result = self.add_action_result(ActionResult(dict(param)))
+
+        if not self._create_client('ec2', action_result, param):
+            return action_result.get_status()
+
+        args = dict()
+        args['GroupId'] = param.get('group_id')
+        args['SecurityGroupRules'] = eval(param.get('security_group_rule'))
+
+        if param.get('dry_run'):
+            args['DryRun'] = param.get('dry_run')
+
+        # make rest call
+        ret_val, response = self._make_boto_call(action_result, 'modify_security_group_rules', **args)
+        if phantom.is_fail(ret_val):
+            return action_result.get_status()
+
+        # Add the response into the data section
+        action_result.add_data(response)
+
+        return action_result.set_status(phantom.APP_SUCCESS, "Successfully deleted the security group")
 
     def _handle_describe_snapshots(self, param):
 
@@ -1685,6 +1712,7 @@ class AwsEc2Connector(BaseConnector):
             'list_autoscaling_groups': self._handle_list_autoscaling_groups,
             'create_security_group': self._handle_create_security_group,
             'delete_security_group': self._handle_delete_security_group,
+            'modify_security_group': self._handle_modify_security_group
         }
 
         if action_id in action_mappings:
