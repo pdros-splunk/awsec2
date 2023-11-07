@@ -33,7 +33,7 @@
             },
             {
                 "module": "botocore",
-                "input_file": "wheels/shared/botocore-1.20.30-py2.py3-none-any.whl"
+                "input_file": "wheels/py3/botocore-1.31.76-py3-none-any.whl"
             },
             {
                 "module": "certifi",
@@ -1884,17 +1884,11 @@
                     "column_order": 0
                 },
                 {
-                    "data_path": "action_result.data.*.ResponseMetadata.HTTPStatusCode",
-                    "data_type": "numeric",
-                    "example_values": [
-                        200
-                    ]
-                },
-                {
-                    "data_path": "action_result.data.*.ResponseMetadata.RequestId",
+                    "data_path": "action_result.data.*.Return",
                     "data_type": "string",
                     "example_values": [
-                        "c5ada32e-8c4d-4f4a-b9aa-d53efd210aba"
+                        true,
+                        false
                     ]
                 },
                 {
@@ -1905,7 +1899,7 @@
                     "data_path": "action_result.message",
                     "data_type": "string",
                     "example_values": [
-                        "Successfully deleted the security group"
+                        "Successfully modified the security group"
                     ]
                 },
                 {

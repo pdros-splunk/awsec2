@@ -876,7 +876,7 @@ class AwsEc2Connector(BaseConnector):
         # Add the response into the data section
         action_result.add_data(response)
 
-        return action_result.set_status(phantom.APP_SUCCESS, "Successfully deleted the security group")
+        return action_result.set_status(phantom.APP_SUCCESS, "Successfully modified the security group")
 
     def _handle_describe_snapshots(self, param):
 
