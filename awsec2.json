@@ -10,7 +10,7 @@
     "product_version_regex": ".*",
     "publisher": "Splunk",
     "license": "Copyright (c) 2019-2023 Splunk Inc.",
-    "app_version": "2.4.3-fdse2",
+    "app_version": "2.4.4-fdse",
     "utctime_updated": "2023-01-04T12:24:20.000000Z",
     "package_name": "phantom_awsec2",
     "main_module": "awsec2_connector.py",
@@ -1900,6 +1900,197 @@
                     "data_type": "string",
                     "example_values": [
                         "Successfully modified the security group"
+                    ]
+                },
+                {
+                    "data_path": "summary.total_objects",
+                    "data_type": "numeric",
+                    "example_values": [
+                        1
+                    ]
+                },
+                {
+                    "data_path": "summary.total_objects_successful",
+                    "data_type": "numeric",
+                    "example_values": [
+                        1
+                    ]
+                }
+            ],
+            "render": {
+                "type": "table"
+            },
+            "versions": "EQ(*)"
+        },
+        {
+            "action": "describe security group rules",
+            "identifier": "describe_security_group_rules",
+            "description": "Describes one or more of your security group rules.",
+            "type": "generic",
+            "read_only": false,
+            "parameters": {
+                "filters": {
+                    "description": "List parameter for one or more filters.",
+                    "data_type": "string",
+                    "primary": true,
+                    "order": 0
+                },
+                "security_group_rule_ids": {
+                    "description": "List parameter, The IDs of the security group rules.",
+                    "data_type": "string",
+                    "contains": [
+                        "aws ec2 security group rule ids"
+                    ],
+                    "primary": true,
+                    "order": 1
+                },
+                "dry_run": {
+                    "description": "Check if asset has required permissions for the action",
+                    "data_type": "boolean",
+                    "order": 2
+                },
+                "next_token": {
+                    "description": "The token returned from a previous paginated request. Pagination continues from the end of the items returned by the previous request",
+                    "data_type": "string",
+                    "primary": true,
+                    "order": 3
+                },
+                "max_results": {
+                    "description": "The maximum number of items to return for this request. To get the next page of items, make another request with the token returned in the output. This value can be between 5 and 1000. If this parameter is not specified, then all items are returned",
+                    "data_type": "numeric",
+                    "primary": true,
+                    "order": 4
+                }
+            },
+            "output": [
+                {
+                    "data_path": "action_result.status",
+                    "data_type": "string",
+                    "example_values": [
+                        "success",
+                        "failed"
+                    ],
+                    "column_name": "Status"
+                },
+                {
+                    "data_path": "action_result.parameter.filters",
+                    "data_type": "string",
+                    "example_values": [
+                        "[{'Name': 'string','Values': ['string',]},],"
+                    ]
+                },
+                {
+                    "data_path": "action_result.parameter.security_group_rule_ids",
+                    "data_type": "string",
+                    "example_values": [
+                        "[{'Name': 'string','Values': ['string',]},],"
+                    ]
+                },
+                {
+                    "data_path": "action_result.parameter.dry_run",
+                    "data_type": "boolean",
+                    "example_values": [
+                        true,
+                        false
+                    ]
+                },
+                {
+                    "data_path": "action_result.parameter.next_token",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.parameter.max_results",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.data.*.SecurityGroupRules.*.SecurityGroupRuleId",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.data.*.SecurityGroupRules.*.GroupId",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.data.*.SecurityGroupRules.*.GroupOwnerId",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.data.*.SecurityGroupRules.*.IsEgress",
+                    "data_type": "boolean",
+                    "example_values": [
+                        true,
+                        false
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.SecurityGroupRules.*.IpProtocol",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.data.*.SecurityGroupRules.*.FromPort",
+                    "data_type": "numeric"
+                },
+                {
+                    "data_path": "action_result.data.*.SecurityGroupRules.*.ToPort",
+                    "data_type": "numeric"
+                },
+                {
+                    "data_path": "action_result.data.*.SecurityGroupRules.*.CidrIpv4",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.data.*.SecurityGroupRules.*.CidrIpv6",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.data.*.SecurityGroupRules.*.PrefixListId",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.data.*.SecurityGroupRules.*.ReferencedGroupInfo.GroupId",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.data.*.SecurityGroupRules.*.ReferencedGroupInfo.PeeringStatus",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.data.*.SecurityGroupRules.*.ReferencedGroupInfo.UserId",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.data.*.SecurityGroupRules.*.ReferencedGroupInfo.VpcId",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.data.*.SecurityGroupRules.*.ReferencedGroupInfo.VpcPeeringConnectionId",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.data.*.SecurityGroupRules.*.Description",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.data.*.SecurityGroupRules.*.Tags.*.Key",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.data.*.SecurityGroupRules.*.Tags.*.Value",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.data.*.NextToken",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.summary",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.message",
+                    "data_type": "string",
+                    "example_values": [
+                        "Successfully describes one or more of your security group rules."
                     ]
                 },
                 {
