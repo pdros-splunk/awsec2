@@ -10,7 +10,7 @@
     "product_version_regex": ".*",
     "publisher": "Splunk",
     "license": "Copyright (c) 2019-2023 Splunk Inc.",
-    "app_version": "2.4.4-fdse",
+    "app_version": "2.4.5-fdse",
     "utctime_updated": "2023-01-04T12:24:20.000000Z",
     "package_name": "phantom_awsec2",
     "main_module": "awsec2_connector.py",
@@ -1900,6 +1900,490 @@
                     "data_type": "string",
                     "example_values": [
                         "Successfully modified the security group"
+                    ]
+                },
+                {
+                    "data_path": "summary.total_objects",
+                    "data_type": "numeric",
+                    "example_values": [
+                        1
+                    ]
+                },
+                {
+                    "data_path": "summary.total_objects_successful",
+                    "data_type": "numeric",
+                    "example_values": [
+                        1
+                    ]
+                }
+            ],
+            "render": {
+                "type": "table"
+            },
+            "versions": "EQ(*)"
+        },
+        {
+            "action": "authorize security group ingress",
+            "identifier": "authorize_security_group_ingress",
+            "description": "Adds the specified inbound (ingress) rules to a security group.",
+            "type": "generic",
+            "read_only": false,
+            "parameters": {
+                "cidr_ip": {
+                    "description": "The IPv4 address range, in CIDR format. You can’t specify this parameter when specifying a source security group. To specify an IPv6 address range, use a set of IP permissions.Alternatively, use a set of IP permissions to specify multiple rules and a description for the rule.",
+                    "data_type": "string",
+                    "order": 0
+                },
+                "from_port": {
+                    "description": "If the protocol is TCP or UDP, this is the start of the port range. If the protocol is ICMP, this is the type number. A value of -1 indicates all ICMP types. If you specify all ICMP types, you must specify all ICMP codes.Alternatively, use a set of IP permissions to specify multiple rules and a description for the rule.",
+                    "data_type": "numeric",
+                    "order": 1
+                },
+                "group_id": {
+                    "description": "The ID of the security group",
+                    "data_type": "string",
+                    "contains": [
+                        "aws ec2 group id"
+                    ],
+                    "order": 2
+                },
+                "group_name": {
+                    "description": "[Default VPC] The name of the security group. You must specify either the security group ID or the security group name in the request. For security groups in a nondefault VPC, you must specify the security group ID.",
+                    "data_type": "string",
+                    "order": 3
+                },
+                "ip_permissions": {
+                    "description": "The sets of IP permissions. List representation.",
+                    "data_type": "string",
+                    "order": 4
+                },
+                "ip_protocol": {
+                    "description": "The IP protocol name ( tcp, udp, icmp) or number (see Protocol Numbers). To specify icmpv6, use a set of IP permissions.Use -1 to specify all protocols. If you specify -1 or a protocol other than tcp, udp, or icmp, traffic on all ports is allowed, regardless of any ports you specify.Alternatively, use a set of IP permissions to specify multiple rules and a description for the rule.",
+                    "data_type": "string",
+                    "order": 5
+                },
+                "source_security_group_name": {
+                    "description": "[Default VPC] The name of the source security group. You can’t specify this parameter in combination with the following parameters: the CIDR IP address range, the start of the port range, the IP protocol, and the end of the port range. Creates rules that grant full ICMP, UDP, and TCP access. To create a rule with a specific IP protocol and port range, use a set of IP permissions instead. The source security group must be in the same VPC.",
+                    "data_type": "string",
+                    "order": 6
+                },
+                "source_security_group_owner_id": {
+                    "description": "[Nondefault VPC] The Amazon Web Services account ID for the source security group, if the source security group is in a different account. You can’t specify this parameter in combination with the following parameters: the CIDR IP address range, the IP protocol, the start of the port range, and the end of the port range. Creates rules that grant full ICMP, UDP, and TCP access. To create a rule with a specific IP protocol and port range, use a set of IP permissions instead.",
+                    "data_type": "string",
+                    "order": 7
+                },
+                "to_port": {
+                    "description": "If the protocol is TCP or UDP, this is the end of the port range. If the protocol is ICMP, this is the code. A value of -1 indicates all ICMP codes. If you specify all ICMP types, you must specify all ICMP codes.Alternatively, use a set of IP permissions to specify multiple rules and a description for the rule.",
+                    "data_type": "numeric",
+                    "order": 8
+                },
+                "dry_run": {
+                    "description": "Check if asset has required permissions for the action",
+                    "data_type": "boolean",
+                    "order": 9
+                },
+                "tag_specifications": {
+                    "description": "[VPC Only] The tags applied to the security group rule. List representation",
+                    "data_type": "string",
+                    "order": 10
+                }
+            },
+            "output": [
+                {
+                    "data_path": "action_result.status",
+                    "data_type": "string",
+                    "example_values": [
+                        "success",
+                        "failed"
+                    ],
+                    "column_name": "Status",
+                    "column_order": 1
+                },
+                {
+                    "data_path": "action_result.parameter.dry_run",
+                    "data_type": "boolean",
+                    "example_values": [
+                        true,
+                        false
+                    ]
+                },
+                {
+                    "data_path": "action_result.parameter.group_id",
+                    "data_type": "string",
+                    "contains": [
+                        "aws ec2 group id"
+                    ],
+                    "example_values": [
+                        "sg-00dae13e516e82136"
+                    ],
+                    "column_name": "Group ID",
+                    "column_order": 0
+                },
+                {
+                    "data_path": "action_result.parameter.cidr_ip",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.parameter.from_port",
+                    "data_type": "numeric"
+                },
+                {
+                    "data_path": "action_result.parameter.group_name",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.parameter.ip_permissions",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.parameter.ip_protocol",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.parameter.source_security_group_name",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.parameter.source_security_group_owner_id",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.parameter.to_port",
+                    "data_type": "numeric"
+                },
+                {
+                    "data_path": "action_result.parameter.tag_specifications",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.data.*.Return",
+                    "data_type": "string",
+                    "example_values": [
+                        true,
+                        false
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.SecurityGroupRules.*.SecurityGroupRuleId",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.data.*.SecurityGroupRules.*.GroupId",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.data.*.SecurityGroupRules.*.GroupOwnerId",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.data.*.SecurityGroupRules.*.IsEgress",
+                    "data_type": "boolean",
+                    "example_values": [
+                        true,
+                        false
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.SecurityGroupRules.*.IpProtocol",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.data.*.SecurityGroupRules.*.FromPort",
+                    "data_type": "numeric"
+                },
+                {
+                    "data_path": "action_result.data.*.SecurityGroupRules.*.ToPort",
+                    "data_type": "numeric"
+                },
+                {
+                    "data_path": "action_result.data.*.SecurityGroupRules.*.CidrIpv4",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.data.*.SecurityGroupRules.*.CidrIpv6",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.data.*.SecurityGroupRules.*.PrefixListId",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.data.*.SecurityGroupRules.*.ReferencedGroupInfo.GroupId",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.data.*.SecurityGroupRules.*.ReferencedGroupInfo.PeeringStatus",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.data.*.SecurityGroupRules.*.ReferencedGroupInfo.UserId",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.data.*.SecurityGroupRules.*.ReferencedGroupInfo.VpcId",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.data.*.SecurityGroupRules.*.ReferencedGroupInfo.VpcPeeringConnectionId",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.data.*.SecurityGroupRules.*.Description",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.data.*.SecurityGroupRules.*.Tags.*.Key",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.data.*.SecurityGroupRules.*.Tags.*.Value",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.summary",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.message",
+                    "data_type": "string",
+                    "example_values": [
+                        "Successfully adds the specified inbound (ingress) rules to a security group."
+                    ]
+                },
+                {
+                    "data_path": "summary.total_objects",
+                    "data_type": "numeric",
+                    "example_values": [
+                        1
+                    ]
+                },
+                {
+                    "data_path": "summary.total_objects_successful",
+                    "data_type": "numeric",
+                    "example_values": [
+                        1
+                    ]
+                }
+            ],
+            "render": {
+                "type": "table"
+            },
+            "versions": "EQ(*)"
+        },
+        {
+            "action": "revoke security group ingress",
+            "identifier": "revoke_security_group_ingress",
+            "description": "Removes the specified inbound (ingress) rules from a security group.",
+            "type": "generic",
+            "read_only": false,
+            "parameters": {
+                "cidr_ip": {
+                    "description": "The IPv4 address range, in CIDR format. You can’t specify this parameter when specifying a source security group. To specify an IPv6 address range, use a set of IP permissions.Alternatively, use a set of IP permissions to specify multiple rules and a description for the rule.",
+                    "data_type": "string",
+                    "order": 0
+                },
+                "from_port": {
+                    "description": "If the protocol is TCP or UDP, this is the start of the port range. If the protocol is ICMP, this is the type number. A value of -1 indicates all ICMP types. If you specify all ICMP types, you must specify all ICMP codes.Alternatively, use a set of IP permissions to specify multiple rules and a description for the rule.",
+                    "data_type": "numeric",
+                    "order": 1
+                },
+                "group_id": {
+                    "description": "The ID of the security group",
+                    "data_type": "string",
+                    "contains": [
+                        "aws ec2 group id"
+                    ],
+                    "order": 2
+                },
+                "group_name": {
+                    "description": "[Default VPC] The name of the security group. You must specify either the security group ID or the security group name in the request. For security groups in a nondefault VPC, you must specify the security group ID.",
+                    "data_type": "string",
+                    "order": 3
+                },
+                "ip_permissions": {
+                    "description": "The sets of IP permissions. List representation.",
+                    "data_type": "string",
+                    "order": 4
+                },
+                "ip_protocol": {
+                    "description": "The IP protocol name ( tcp, udp, icmp) or number (see Protocol Numbers). To specify icmpv6, use a set of IP permissions.Use -1 to specify all protocols. If you specify -1 or a protocol other than tcp, udp, or icmp, traffic on all ports is allowed, regardless of any ports you specify.Alternatively, use a set of IP permissions to specify multiple rules and a description for the rule.",
+                    "data_type": "string",
+                    "order": 5
+                },
+                "source_security_group_name": {
+                    "description": "[Default VPC] The name of the source security group. You can’t specify this parameter in combination with the following parameters: the CIDR IP address range, the start of the port range, the IP protocol, and the end of the port range. Creates rules that grant full ICMP, UDP, and TCP access. To create a rule with a specific IP protocol and port range, use a set of IP permissions instead. The source security group must be in the same VPC.",
+                    "data_type": "string",
+                    "order": 6
+                },
+                "source_security_group_owner_id": {
+                    "description": "[Nondefault VPC] The Amazon Web Services account ID for the source security group, if the source security group is in a different account. You can’t specify this parameter in combination with the following parameters: the CIDR IP address range, the IP protocol, the start of the port range, and the end of the port range. Creates rules that grant full ICMP, UDP, and TCP access. To create a rule with a specific IP protocol and port range, use a set of IP permissions instead.",
+                    "data_type": "string",
+                    "order": 7
+                },
+                "to_port": {
+                    "description": "If the protocol is TCP or UDP, this is the end of the port range. If the protocol is ICMP, this is the code. A value of -1 indicates all ICMP codes. If you specify all ICMP types, you must specify all ICMP codes.Alternatively, use a set of IP permissions to specify multiple rules and a description for the rule.",
+                    "data_type": "numeric",
+                    "order": 8
+                },
+                "dry_run": {
+                    "description": "Check if asset has required permissions for the action",
+                    "data_type": "boolean",
+                    "order": 9
+                },
+                "security_group_rule_ids": {
+                    "description": "The IDs of the security group rules. List representation",
+                    "data_type": "string",
+                    "order": 10
+                }
+            },
+            "output": [
+                {
+                    "data_path": "action_result.status",
+                    "data_type": "string",
+                    "example_values": [
+                        "success",
+                        "failed"
+                    ],
+                    "column_name": "Status",
+                    "column_order": 1
+                },
+                {
+                    "data_path": "action_result.parameter.dry_run",
+                    "data_type": "boolean",
+                    "example_values": [
+                        true,
+                        false
+                    ]
+                },
+                {
+                    "data_path": "action_result.parameter.group_id",
+                    "data_type": "string",
+                    "contains": [
+                        "aws ec2 group id"
+                    ],
+                    "example_values": [
+                        "sg-00dae13e516e82136"
+                    ],
+                    "column_name": "Group ID",
+                    "column_order": 0
+                },
+                {
+                    "data_path": "action_result.parameter.cidr_ip",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.parameter.from_port",
+                    "data_type": "numeric"
+                },
+                {
+                    "data_path": "action_result.parameter.group_name",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.parameter.ip_permissions",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.parameter.ip_protocol",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.parameter.source_security_group_name",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.parameter.source_security_group_owner_id",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.parameter.to_port",
+                    "data_type": "numeric"
+                },
+                {
+                    "data_path": "action_result.parameter.security_group_rule_ids",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.data.*.Return",
+                    "data_type": "string",
+                    "example_values": [
+                        true,
+                        false
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.UnknownIpPermissions.*.FromPort",
+                    "data_type": "numeric"
+                },
+                {
+                    "data_path": "action_result.data.*.UnknownIpPermissions.*.IpProtocol",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.data.*.UnknownIpPermissions.*.IpRanges.*.CidrIp",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.data.*.UnknownIpPermissions.*.IpRanges.*.Description",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.data.*.UnknownIpPermissions.*.Ipv6Ranges.*.CidrIpv6",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.data.*.UnknownIpPermissions.*.Ipv6Ranges.*.Description",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.data.*.UnknownIpPermissions.*.PrefixListIds.*.Description",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.data.*.UnknownIpPermissions.*.PrefixListIds.*.PrefixListId",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.data.*.UnknownIpPermissions.*.ToPort",
+                    "data_type": "numeric"
+                },
+                {
+                    "data_path": "action_result.data.*.UnknownIpPermissions.*.UserIdGroupPairs.*.Description",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.data.*.UnknownIpPermissions.*.UserIdGroupPairs.*.GroupId",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.data.*.UnknownIpPermissions.*.UserIdGroupPairs.*.GroupName",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.data.*.UnknownIpPermissions.*.UserIdGroupPairs.*.PeeringStatus",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.data.*.UnknownIpPermissions.*.UserIdGroupPairs.*.UserId",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.data.*.UnknownIpPermissions.*.UserIdGroupPairs.*.VpcId",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.data.*.UnknownIpPermissions.*.UserIdGroupPairs.*.VpcPeeringConnectionId",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.summary",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.message",
+                    "data_type": "string",
+                    "example_values": [
+                        "Successfully adds the specified inbound (ingress) rules to a security group."
                     ]
                 },
                 {

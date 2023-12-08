@@ -913,6 +913,113 @@ class AwsEc2Connector(BaseConnector):
         action_result.add_data(response)
 
         return action_result.set_status(phantom.APP_SUCCESS, "Successfully describes one or more of your security group rules.")
+    
+    def _handle_authorize_security_group_ingress(self, param):
+        self.save_progress("In action handler for: {0}".format(self.get_action_identifier()))
+
+        # Add an action result object to self (BaseConnector) to represent the action for this param
+        action_result = self.add_action_result(ActionResult(dict(param)))
+
+        if not self._create_client('ec2', action_result, param):
+            return action_result.get_status()
+
+        args = dict()
+        if param.get('cidr_ip'):
+            args['CidrIp'] = param.get('cidr_ip')
+        
+        if param.get('from_port'):
+            args['FromPort'] = int(param.get('from_port'))
+        
+        if param.get('group_id'):
+            args['GroupId'] = param.get('group_id')
+        
+        if param.get('group_name'):
+            args['GroupName'] = param.get('group_name')
+
+        if param.get('ip_permissions'):
+            args['IpPermissions'] = eval(param.get('ip_permissions'))
+        
+        if param.get('ip_protocol'):
+            args['IpProtocol'] = param.get('ip_protocol')
+        
+        if param.get('source_security_group_name'):
+            args['SourceSecurityGroupName'] = param.get('source_security_group_name')
+        
+        if param.get('source_security_group_owner_id'):
+            args['SourceSecurityGroupOwnerId'] = param.get('source_security_group_owner_id')
+        
+        if param.get('to_port'):
+            args['ToPort'] = int(param.get('to_port'))
+
+        if param.get('dry_run'):
+            args['DryRun'] = param.get('dry_run')
+        
+        if param.get('tag_specifications'):
+            args['TagSpecifications'] = eval(param.get('tag_specifications'))
+
+        # make rest call
+        ret_val, response = self._make_boto_call(action_result, 'authorize_security_group_ingress', **args)
+        if phantom.is_fail(ret_val):
+            return action_result.get_status()
+
+        # Add the response into the data section
+        action_result.add_data(response)
+
+        return action_result.set_status(phantom.APP_SUCCESS, "Successfully adds the specified inbound (ingress) rules to a security group.")
+    
+    def _handle_revoke_security_group_ingress(self, param):
+        self.save_progress("In action handler for: {0}".format(self.get_action_identifier()))
+
+        # Add an action result object to self (BaseConnector) to represent the action for this param
+        action_result = self.add_action_result(ActionResult(dict(param)))
+
+        if not self._create_client('ec2', action_result, param):
+            return action_result.get_status()
+
+        args = dict()
+        if param.get('cidr_ip'):
+            args['CidrIp'] = param.get('cidr_ip')
+        
+        if param.get('from_port'):
+            args['FromPort'] = int(param.get('from_port'))
+        
+        if param.get('group_id'):
+            args['GroupId'] = param.get('group_id')
+        
+        if param.get('group_name'):
+            args['GroupName'] = param.get('group_name')
+
+        if param.get('ip_permissions'):
+            args['IpPermissions'] = eval(param.get('ip_permissions'))
+        
+        if param.get('ip_protocol'):
+            args['IpProtocol'] = param.get('ip_protocol')
+        
+        if param.get('source_security_group_name'):
+            args['SourceSecurityGroupName'] = param.get('source_security_group_name')
+        
+        if param.get('source_security_group_owner_id'):
+            args['SourceSecurityGroupOwnerId'] = param.get('source_security_group_owner_id')
+        
+        if param.get('to_port'):
+            args['ToPort'] = int(param.get('to_port'))
+
+        if param.get('dry_run'):
+            args['DryRun'] = param.get('dry_run')
+        
+        if param.get('security_group_rule_ids'):
+            args['SecurityGroupRuleIds'] = eval(param.get('security_group_rule_ids'))
+
+        # make rest call
+        ret_val, response = self._make_boto_call(action_result, 'revoke_security_group_ingress', **args)
+        if phantom.is_fail(ret_val):
+            return action_result.get_status()
+
+        # Add the response into the data section
+        action_result.add_data(response)
+
+        return action_result.set_status(phantom.APP_SUCCESS, "Successfully removes the specified inbound (ingress) rules from a security group.")
+
 
     def _handle_describe_snapshots(self, param):
 
@@ -1749,7 +1856,9 @@ class AwsEc2Connector(BaseConnector):
             'create_security_group': self._handle_create_security_group,
             'delete_security_group': self._handle_delete_security_group,
             'modify_security_group': self._handle_modify_security_group,
-            'describe_security_group_rules': self._handle_describe_security_group_rules
+            'describe_security_group_rules': self._handle_describe_security_group_rules,
+            'authorize_security_group_ingress': self._handle_authorize_security_group_ingress,
+            'revoke_security_group_ingress': self._handle_revoke_security_group_ingress,
         }
 
         if action_id in action_mappings:
